@@ -33,6 +33,8 @@ DEBUG = True
 ALLOWED_HOSTS = []
 
 
+
+
 # Application definition
 
 INSTALLED_APPS = [
@@ -42,17 +44,34 @@ INSTALLED_APPS = [
     'django.contrib.sessions',
     'django.contrib.messages',
     'django.contrib.staticfiles',
+    'rest_framework',     
+    'rest_framework.authtoken',      
+    'corsheaders',
+    'users',
+    'children',
+    'feedback',
+    'dashboard',
+    'therapy_sessions',
+    'notifications',   
 ]
 
 MIDDLEWARE = [
     'django.middleware.security.SecurityMiddleware',
     'django.contrib.sessions.middleware.SessionMiddleware',
+     'corsheaders.middleware.CorsMiddleware',
     'django.middleware.common.CommonMiddleware',
     'django.middleware.csrf.CsrfViewMiddleware',
     'django.contrib.auth.middleware.AuthenticationMiddleware',
     'django.contrib.messages.middleware.MessageMiddleware',
     'django.middleware.clickjacking.XFrameOptionsMiddleware',
 ]
+CORS_ALLOWED_ORIGINS = [
+    "http://localhost:5173",  # React development server URL
+    # Add more origins if needed, e.g., production URL.
+]
+
+AUTH_USER_MODEL = 'users.User'
+
 
 ROOT_URLCONF = 'therapy_care_backend.urls'
 
@@ -87,6 +106,17 @@ DATABASES = {
         'HOST': os.environ.get('DB_HOST'),
         'PORT': os.environ.get('DB_PORT')
     }
+}
+
+REST_FRAMEWORK = {
+    'DEFAULT_PERMISSION_CLASSES': [
+        'rest_framework.permissions.IsAuthenticated',  # Move this here
+    ],
+    'DEFAULT_AUTHENTICATION_CLASSES': [
+        'rest_framework.authentication.TokenAuthentication',  # Keep this for token auth
+        'rest_framework.authentication.SessionAuthentication',  # Optional, for session-based auth
+        'rest_framework.authentication.BasicAuthentication',  # Optional, for basic auth
+    ],
 }
 
 
